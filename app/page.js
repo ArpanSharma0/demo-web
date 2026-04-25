@@ -1,179 +1,127 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import ProductGrid from '@/components/ProductGrid';
 import Editorial from '@/components/Editorial';
-import Reveal from '@/components/Reveal';
-import LuxuryButton from '@/components/LuxuryButton';
+import FeaturedPieces from '@/components/FeaturedPieces';
+import BrandManifesto from '@/components/BrandManifesto';
+import LookbookStrip from '@/components/LookbookStrip';
 import CustomCursor from '@/components/CustomCursor';
-import { products } from '@/lib/data';
+import Preloader from '@/components/Preloader';
+import CinematicFooter from '@/components/CinematicFooter';
+import Reveal from '@/components/Reveal';
+import { products, lookbookImages, featuredPieces } from '@/lib/data';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(false);
   const router = useRouter();
-  const collectionRef = useRef(null);
-  const isInView = useInView(collectionRef, { amount: 0.5 });
+  const transitionTriggerRef = useRef(null);
+  const isTriggerInView = useInView(transitionTriggerRef, { amount: 0.6 });
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 2600);
-    return () => clearTimeout(timer);
+  const handlePreloaderComplete = useCallback(() => {
+    setIsLoading(false);
   }, []);
 
-  // 1 & 2. Route Prefetching & Image Preloading
+  // Prefetch & preload
   useEffect(() => {
     router.prefetch('/collections');
-    
-    // Using native Image object to ensure items are in browser cache
-    products.forEach((product) => {
-      const img = new window.Image();
-      img.src = product.image;
-    });
+    products.forEach((p) => { const img = new window.Image(); img.src = p.image; });
+    lookbookImages.forEach((src) => { const img = new window.Image(); img.src = src; });
+    featuredPieces.forEach((p) => { const img = new window.Image(); img.src = p.image; });
   }, [router]);
 
-  // Level 10 Scroll Interception & Transition Sequence
+  // Scroll interception — triggers after Lookbook section
   useEffect(() => {
-    if (isInView && !isTransitioning && !isLoading) {
+    if (isTriggerInView && !isTransitioning && !isLoading) {
       setIsTransitioning(true);
-      document.body.style.overflow = 'hidden'; // Lock Scroll
-      
-      // Step 3: Activate overlay
+      document.body.style.overflow = 'hidden';
+
       setTimeout(() => {
-        setShowOverlay(true);
+        window.dispatchEvent(new CustomEvent('trigger-transition', {
+          detail: { route: '/collections' }
+        }));
       }, 400);
-
-      // Step 4: After overlay covers screen, navigate
-      // Overlay takes 1.2s to slide up. 400ms delay + 1200ms = 1600ms total. 
-      // We push exact frame overlay is full.
-      setTimeout(() => {
-        router.push('/collections');
-      }, 1600);
     }
-  }, [isInView, isTransitioning, isLoading, router]);
+  }, [isTriggerInView, isTransitioning, isLoading]);
 
+  // Listen for overlay completion → push route
+  useEffect(() => {
+    const handleTransitionReady = (e) => {
+      const route = e.detail?.route;
+      if (route) router.push(route);
+    };
+    window.addEventListener('transition-ready', handleTransitionReady);
+    return () => window.removeEventListener('transition-ready', handleTransitionReady);
+  }, [router]);
 
   return (
     <>
       <CustomCursor />
-      
+
       <AnimatePresence>
-        {showOverlay && (
-          <motion.div
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "-100%" }}
-            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="transition-overlay !pointer-events-auto"
-          />
-        )}
+        {isLoading && <Preloader onComplete={handlePreloaderComplete} />}
       </AnimatePresence>
 
-      <motion.main 
+      <motion.main
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoading ? 0 : 1 }}
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-        className="min-h-screen overflow-x-hidden"
+        className="min-h-screen overflow-x-clip"
       >
         <Navbar />
-        
-        <motion.div 
-          animate={{ 
+
+        <motion.div
+          animate={{
             opacity: isTransitioning ? 0 : 1,
-            y: isTransitioning ? -100 : 0 
+            y: isTransitioning ? -80 : 0
           }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         >
+          {/* Scene 1: Hero */}
           <Hero />
+
+          {/* Scene 2: Editorial — Provence Textiles */}
           <Editorial />
+
+          {/* Scene 3: Featured Pieces */}
+          <FeaturedPieces />
+
+          {/* Scene 4: Brand Manifesto */}
+          <BrandManifesto />
+
+          {/* Scene 5: Lookbook */}
+          <LookbookStrip />
         </motion.div>
 
-        {/* Collection Trigger Section */}
-        <motion.section 
-          ref={collectionRef}
-          layoutId="collection-view"
-          animate={{ scale: isTransitioning ? 1.05 : 1 }}
-          className="section-padding overflow-hidden relative z-20 bg-transparent"
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        >
-
-          <div className="lux-container text-center mb-40">
-            <Reveal width="100%" delay={0.2} stagger>
-              <span className="text-[10px] uppercase tracking-[0.6em] text-text-primary/30 block mb-10">Signature Pieces</span>
-              <h2 className="font-h2 uppercase tracking-[0.3em]">The Current Edit</h2>
+        {/* Transition Trigger — after Lookbook, before Footer */}
+        <div ref={transitionTriggerRef} className="py-40">
+          <motion.div
+            animate={{ opacity: isTransitioning ? 0 : 1 }}
+            transition={{ duration: 1 }}
+            className="text-center"
+          >
+            <Reveal delay={0.2}>
+              <p className="text-[10px] uppercase tracking-[0.6em] text-text-primary/20 mb-8">
+                Continue the journey
+              </p>
+              <h2 className="font-serif text-[clamp(32px,4vw,52px)] font-light tracking-[0.1em] text-text-primary/60">
+                View Full Collection
+              </h2>
             </Reveal>
-          </div>
-          
-          <ProductGrid />
-          
-          <div className="flex justify-center mt-32">
-            <Reveal delay={0.4}>
-              <LuxuryButton>View Full Collection</LuxuryButton>
-            </Reveal>
-          </div>
-        </motion.section>
+          </motion.div>
+        </div>
 
-        {/* Footer */}
-        <motion.footer 
+        {/* Scene 6: Cinematic Footer */}
+        <motion.div
           animate={{ opacity: isTransitioning ? 0 : 1 }}
           transition={{ duration: 1 }}
-          className="section-padding border-t border-black/5"
         >
-
-          <div className="lux-container">
-            <div className="flex flex-col md:flex-row justify-between items-start gap-40">
-              <Reveal delay={0.2} stagger>
-                <div className="max-w-[400px]">
-                  <h2 className="text-4xl font-serif tracking-[0.4em] uppercase mb-14">NOVAELLE</h2>
-                  <p className="font-body uppercase tracking-[0.15em] opacity-40 leading-loose">
-                    A dialogue between heritage craftsmanship and contemporary silhouette. Designed for the conscious perspective.
-                  </p>
-                </div>
-              </Reveal>
-              
-              <div className="grid grid-cols-2 gap-32">
-                <Reveal delay={0.4} stagger>
-                  <div className="flex flex-col gap-10">
-                    <h4 className="text-[10px] uppercase tracking-[0.3em] font-medium">Boutique</h4>
-                    <div className="flex flex-col gap-6 text-[10px] uppercase tracking-[0.2em] text-text-primary/30">
-                      <a href="#" className="nav-link">Collections</a>
-                      <a href="#" className="nav-link">Archival</a>
-                      <a href="#" className="nav-link">Journal</a>
-                    </div>
-                  </div>
-                </Reveal>
-
-                <Reveal delay={0.6} stagger>
-                  <div className="flex flex-col gap-10">
-                    <h4 className="text-[10px] uppercase tracking-[0.3em] font-medium">Studio</h4>
-                    <div className="flex flex-col gap-6 text-[10px] uppercase tracking-[0.2em] text-text-primary/30">
-                      <a href="#" className="nav-link">Story</a>
-                      <a href="#" className="nav-link">Contact</a>
-                    </div>
-                  </div>
-                </Reveal>
-              </div>
-            </div>
-            
-            <Reveal delay={0.8} width="100%">
-              <div className="mt-48 pt-12 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-10">
-                <p className="text-[9px] text-text-primary/20 tracking-[0.4em] uppercase">© 2026 NOVAELLE STUDIO. LONDON.</p>
-                <div className="flex gap-16 text-[9px] text-text-primary/20 tracking-[0.4em] uppercase">
-                  <a href="#" className="hover:text-text-primary transition-colors duration-1000">Privacy</a>
-                  <a href="#" className="hover:text-text-primary transition-colors duration-1000">Terms</a>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </motion.footer>
+          <CinematicFooter />
+        </motion.div>
       </motion.main>
-
     </>
   );
 }
-
-
-

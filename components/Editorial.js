@@ -15,12 +15,12 @@ const Editorial = () => {
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, -30]);
 
   return (
-    <section ref={containerRef} className="section-padding overflow-hidden">
+    <section ref={containerRef} className="min-h-screen w-full flex items-center justify-center overflow-hidden py-32">
 
-      <div className="lux-container">
+      <div className="lux-container w-full">
         <div className="flex flex-col md:flex-row items-center gap-24 md:gap-40">
-          {/* Left: Full Image */}
-          <div className="w-full md:w-1/2 aspect-[4/5] overflow-hidden img-reveal-container">
+          {/* Left: Image */}
+          <div className="w-full md:w-5/12 aspect-[3/4] max-h-[70vh] overflow-hidden img-reveal-container">
             <motion.div 
               style={{ 
                 scale: imgScale,
@@ -46,14 +46,9 @@ const Editorial = () => {
               </h2>
             </Reveal>
             <Reveal delay={0.5}>
-              <p className="font-body max-w-[480px] mb-14 text-text-primary/70">
+              <p className="font-body max-w-[480px] text-text-primary/70">
                 {editorialData.paragraph}
               </p>
-            </Reveal>
-            <Reveal delay={0.7}>
-              <button className="text-[10px] uppercase tracking-[0.4em] border-b border-text-primary/10 pb-3 hover:border-text-primary transition-all duration-1000">
-                The Narrative
-              </button>
             </Reveal>
           </motion.div>
         </div>

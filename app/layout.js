@@ -1,5 +1,6 @@
 import './globals.css';
 import { Inter, Playfair_Display } from 'next/font/google';
+import GlobalTransition from '@/components/GlobalTransition';
 
 const inter = Inter({ 
   subsets: ['latin'], 
@@ -21,9 +22,10 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="antialiased">
         <div className="global-bg" />
+        <GlobalTransition />
         {children}
       </body>
     </html>
-
   );
 }
+

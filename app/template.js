@@ -1,18 +1,7 @@
 'use client';
-import { motion, AnimatePresence } from 'framer-motion';
-import { usePathname } from 'next/navigation';
 
+// Template stripped bare — the GlobalTransition overlay handles all route transitions.
+// AnimatePresence mode="wait" was blocking rendering and causing blank frames.
 export default function Template({ children }) {
-  const pathname = usePathname();
-
-  return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={pathname}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
-  );
+  return <>{children}</>;
 }
-
