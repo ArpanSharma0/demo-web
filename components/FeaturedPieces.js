@@ -1,5 +1,5 @@
 'use client';
-import { useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { featuredPieces } from '@/lib/data';
 import Reveal from './Reveal';
@@ -11,8 +11,20 @@ const FeaturedPieces = () => {
     offset: ["start end", "end start"]
   });
 
-  const y1 = useTransform(scrollYProgress, [0, 1], [60, -60]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const y1_val = useTransform(scrollYProgress, [0, 1], [60, -60]);
+  const y2_val = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  
+  const y1 = isMobile ? 0 : y1_val;
+  const y2 = isMobile ? 0 : y2_val;
 
   return (
     <section ref={containerRef} className="py-40 overflow-hidden">

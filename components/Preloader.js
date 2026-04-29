@@ -6,15 +6,15 @@ const Preloader = ({ onComplete }) => {
   const [phase, setPhase] = useState('writing'); // writing → hold → exit
 
   useEffect(() => {
-    // Phase 1: Writing animation plays (2s)
-    // Phase 2: Hold the completed text briefly (0.6s)
-    const holdTimer = setTimeout(() => setPhase('hold'), 2000);
+    // Phase 1: Writing animation plays (1.2s)
+    // Phase 2: Hold the completed text briefly (0.3s)
+    const holdTimer = setTimeout(() => setPhase('hold'), 1200);
     // Phase 3: Exit
-    const exitTimer = setTimeout(() => setPhase('exit'), 2600);
+    const exitTimer = setTimeout(() => setPhase('exit'), 1500);
     // Phase 4: Fully gone
     const doneTimer = setTimeout(() => {
       if (onComplete) onComplete();
-    }, 3600);
+    }, 2300);
 
     return () => {
       clearTimeout(holdTimer);
@@ -36,7 +36,7 @@ const Preloader = ({ onComplete }) => {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: phase === 'hold' || phase === 'writing' ? 0.3 : 0 }}
-            transition={{ duration: 1.2, delay: 1.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, delay: 1, ease: [0.22, 1, 0.36, 1] }}
             className="preloader-tagline"
           >
             Modern Luxury Fashion
@@ -55,7 +55,7 @@ const Preloader = ({ onComplete }) => {
               textAnchor="middle"
               className="preloader-text"
             >
-              NOVAELLE
+              Sweety Fashion
             </text>
           </svg>
 
@@ -64,7 +64,7 @@ const Preloader = ({ onComplete }) => {
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
               className="preloader-line"
             />
           </div>

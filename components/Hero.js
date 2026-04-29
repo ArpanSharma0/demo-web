@@ -37,12 +37,12 @@ const Hero = () => {
         style={{ opacity: opacityText }}
         className="relative z-10 text-center text-white"
       >
-        <div className="overflow-hidden mb-12">
+        <div className="overflow-hidden mb-8">
           <motion.h1 
             initial={{ y: "110%" }}
             animate={{ y: 0 }}
             transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
-            className="font-h1 leading-none tracking-[0.1em]"
+            className="font-h1"
           >
             {heroData.title}
           </motion.h1>
@@ -53,7 +53,7 @@ const Hero = () => {
             initial={{ y: "110%" }}
             animate={{ y: 0 }}
             transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1], delay: 0.9 }}
-            className="text-[12px] md:text-[14px] uppercase tracking-[0.6em] opacity-80"
+            className="text-[11px] uppercase tracking-[0.8em] opacity-60"
           >
             {heroData.subtitle}
           </motion.p>

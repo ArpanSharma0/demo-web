@@ -25,10 +25,10 @@ export default function GlobalTransition() {
       // Ensure it starts from bottom
       await controls.set({ y: "100%" });
       
-      // Slide up to cover the screen
+      // Slide up to cover the screen — snappier timing
       await controls.start({ 
         y: "0%", 
-        transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] } 
+        transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 } 
       });
       
       // Screen is now fully covered — fire the route change
@@ -63,7 +63,7 @@ export default function GlobalTransition() {
     <motion.div
       initial={{ y: "100%" }}
       animate={controls}
-      className={`fixed inset-0 z-[99999] bg-bg-primary w-full h-full ${isAnimating ? 'pointer-events-auto' : 'pointer-events-none'}`}
+      className={`fixed inset-0 z-[99999] bg-premium-gradient w-full h-full ${isAnimating ? 'pointer-events-auto' : 'pointer-events-none'}`}
     />
   );
 }

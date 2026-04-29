@@ -26,23 +26,23 @@ const BrandManifesto = () => {
         {/* Decorative line */}
         <motion.div 
           style={{ scaleX: lineScale }}
-          className="w-16 h-[1px] bg-text-primary/15 mx-auto mb-20 origin-center"
+          className="w-16 h-[1px] bg-bg-secondary mx-auto mb-20 origin-center opacity-60"
         />
 
         {/* The statement */}
-        <h2 className="font-serif text-[clamp(28px,4vw,48px)] font-light leading-[1.5] tracking-[0.04em] text-text-primary/80 mb-16">
+        <h2 className="font-serif text-[clamp(28px,4vw,56px)] font-light leading-[1.3] text-text-primary mb-16">
           {manifesto.statement}
         </h2>
 
         {/* Attribution */}
-        <p className="text-[10px] uppercase tracking-[0.5em] text-text-primary/25">
+        <p className="text-[10px] uppercase tracking-[0.8em] text-text-primary/80 font-medium">
           {manifesto.attribution}
         </p>
 
         {/* Bottom decorative line */}
         <motion.div 
           style={{ scaleX: lineScale }}
-          className="w-16 h-[1px] bg-text-primary/15 mx-auto mt-20 origin-center"
+          className="w-16 h-[1px] bg-bg-secondary mx-auto mt-20 origin-center opacity-60"
         />
       </motion.div>
     </section>

@@ -41,12 +41,12 @@ const Editorial = () => {
             className="w-full md:w-1/2 flex flex-col items-start px-0 md:px-12"
           >
             <Reveal delay={0.3}>
-              <h2 className="font-h2 leading-tight mb-14 tracking-tight">
+              <h2 className="font-h2 leading-tight mb-14 tracking-tight lux-text-shadow">
                 {editorialData.heading}
               </h2>
             </Reveal>
             <Reveal delay={0.5}>
-              <p className="font-body max-w-[480px] text-text-primary/70">
+              <p className="font-body max-w-[480px] text-text-primary/95">
                 {editorialData.paragraph}
               </p>
             </Reveal>

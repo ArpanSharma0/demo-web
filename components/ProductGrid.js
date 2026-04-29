@@ -40,16 +40,22 @@ const ProductGrid = ({ columns = 3 }) => {
               className="group cursor-pointer"
             >
               {/* Image */}
-              <div className="relative aspect-[3/4] overflow-hidden mb-6 bg-[#EAE6E1]">
-                <motion.div
-                  whileHover={{ scale: 1.04 }}
-                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                  className="w-full h-full bg-cover bg-center will-change-transform"
-                  style={{ backgroundImage: `url('${product.image}')` }}
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-1000 flex items-center justify-center">
-                  <span className="text-[10px] uppercase tracking-[0.4em] text-white opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    View
+              <div className="relative aspect-[3/4] overflow-hidden mb-6 bg-bg-secondary/40">
+                {product.image ? (
+                  <motion.div
+                    whileHover={{ scale: 1.04 }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="w-full h-full bg-cover bg-center will-change-transform"
+                    style={{ backgroundImage: `url('${product.image}')` }}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                     <span className="text-[8px] uppercase tracking-[0.5em] text-text-primary/10">Coming Soon</span>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-1000 flex items-center justify-center">
+                  <span className="text-[10px] uppercase tracking-[0.4em] text-text-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    Preview
                   </span>
                 </div>
               </div>
@@ -57,7 +63,7 @@ const ProductGrid = ({ columns = 3 }) => {
               {/* Info */}
               <div className="text-center">
                 <h3 className="font-serif text-[15px] tracking-[0.08em] mb-2">{product.name}</h3>
-                <span className="text-[11px] font-body text-text-primary/35 uppercase tracking-[0.15em]">{product.price}</span>
+                <span className="text-[11px] font-body text-text-primary/60 uppercase tracking-[0.15em]">{product.price}</span>
               </div>
             </motion.div>
           ))}

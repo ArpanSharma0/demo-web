@@ -8,11 +8,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        'bg-primary': '#F5F1ED',    /* Luxury Off-white */
-        'bg-secondary': '#EAE4DD',  /* Beige Tone 1 */
-        'bg-tertiary': '#D6CFC7',   /* Beige Tone 2 */
-        'text-primary': '#2B2B2B',  /* Soft Black (No pure black) */
-        border: 'rgba(43, 43, 43, 0.08)',
+        'bg-primary': '#F9F6F1',    /* Cream Silk */
+        'bg-secondary': '#D4A5A5',  /* Rose Accent */
+        'bg-tertiary': '#F2EBE1',   /* Lighter Cream */
+        'text-primary': '#2D2D2D',  /* Graphite */
+        border: 'rgba(45, 45, 45, 0.08)',
       },
       fontFamily: {
         serif: ['var(--font-serif)', 'serif'],
@@ -25,6 +25,9 @@ export default {
       },
       padding: {
         'luxury-section': '120px',
+      },
+      backgroundImage: {
+        'premium-gradient': 'linear-gradient(135deg, #F9F6F1 0%, #FFFFFF 50%, #E2B2A7 100%)',
       },
     },
   },

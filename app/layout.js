@@ -1,25 +1,27 @@
 import './globals.css';
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Montserrat, Cormorant_Garamond } from 'next/font/google';
 import GlobalTransition from '@/components/GlobalTransition';
 
-const inter = Inter({ 
+const montserrat = Montserrat({ 
   subsets: ['latin'], 
   variable: '--font-sans' 
 });
 
-const playfair = Playfair_Display({ 
+const cormorant = Cormorant_Garamond({ 
   subsets: ['latin'], 
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
   variable: '--font-serif' 
 });
 
 export const metadata = {
-  title: 'NOVAELLE | Modern Luxury Fashion',
+  title: 'Sweety Fashion',
   description: 'Premium minimalist fashion for the modern woman.',
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${montserrat.variable} ${cormorant.variable}`}>
       <body className="antialiased">
         <div className="global-bg" />
         <GlobalTransition />
