@@ -22,6 +22,13 @@ export default function Home() {
     setIsLoading(false);
   }, []);
 
+  // Ensure scroll is enabled on mount
+  useEffect(() => {
+    if (!isLoading && !isTransitioning) {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isLoading, isTransitioning]);
+
   // Prefetch & preload
   useEffect(() => {
     router.prefetch('/collections');

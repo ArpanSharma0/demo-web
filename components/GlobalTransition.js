@@ -51,6 +51,7 @@ export default function GlobalTransition() {
           transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] } 
         }).then(() => {
           setIsAnimating(false);
+          document.body.style.overflow = 'auto';
           pendingRoute.current = null;
         });
       }, 150);
